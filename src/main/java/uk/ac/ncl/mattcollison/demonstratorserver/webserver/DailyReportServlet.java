@@ -23,6 +23,7 @@ import javax.servlet.http.Part;
  */
 public class DailyReportServlet extends HttpServlet {
 
+    private SqlDAO db = new SqlDAO();
     public DailyReportServlet() {
     }
 
@@ -40,14 +41,17 @@ public class DailyReportServlet extends HttpServlet {
             Enumeration<String> formParts = request.getParameterNames();
             while(formParts.hasMoreElements()){
                 String formElement = formParts.nextElement();
+//                System.out.println(formElement);
                 if (formElement.startsWith("demo_name")){
+//                    System.out.println("CHECKPOINT");
                     int number = Integer.parseInt(formElement.replace("demo_name", ""));
-                    WebServer.database.queryDatabase(
-                            "INSERT INTO demo_hours ("
-                                    + ", " + request.getParameter("module_code")
-                                    + ", " + request.getParameter("demo_date")
-                                    + ", " + request.getParameter(formElement)
-                                    + ", " + request.getParameter("no_hours"+number));
+                    String dbquery = "INSERT INTO demo_hours.demo_hours (Date, ModuleCode, DemonstratorID) VALUES (\""
+                            + request.getParameter("demo_date")
+                            + "\", \"" + request.getParameter("modules")
+                            + "\", (SELECT ID FROM demo_hours.demonstrators WHERE demonstrators.LastName = \"" + request.getParameter(formElement).split(" ")[1] +"\"));";
+//                                    + "), " + request.getParameter("no_hours"+number);
+//                    System.out.println(dbquery);
+                    db.executeQuery(dbquery);
                 }
             }
                 
@@ -61,9 +65,12 @@ public class DailyReportServlet extends HttpServlet {
         try {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             Date date = new Date();
-            System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
-            String query = "SELECT * FROM demo_hours WHERE demo_date = " + dateFormat.format(date);
-            response.getWriter().print(WebServer.database.queryToHTML(query));
+//            System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
+            String query = "SELECT * FROM demo_hours WHERE demo_hours.Date = \"" + dateFormat.format(date) + "\";";
+//            System.out.println(query);
+            String dbResponse = db.queryToHTML(query);
+//            System.out.println(dbResponse);
+            response.getWriter().print(dbResponse);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

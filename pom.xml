@@ -42,7 +42,7 @@
                             <addClasspath>true</addClasspath>
                             <useUniqueVersions>false</useUniqueVersions>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>uk.ac.ncl.mattcollison.demonstratorserver.WebServer</mainClass>
+                            <mainClass>uk.ac.ncl.mattcollison.demonstratorserver.webserver.WebServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -14,6 +14,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import java.awt.Desktop;
+import java.io.File;
 import javax.servlet.MultipartConfigElement;
 
 /**
@@ -23,23 +24,32 @@ import javax.servlet.MultipartConfigElement;
 public class WebServer implements Runnable {
 
     public static SqlDAO database;
+
     public static void main(String[] args) {
         //start web server in new thread
         try {
             (new Thread(new WebServer())).start();
-            Desktop.getDesktop().browse(new URL("http://localhost/").toURI());
+            Desktop.getDesktop().browse(new URL("http://localhost").toURI());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     public void run() {
+        File f = new File("./");
+        String rootPathHack="";
+        try {
+            rootPathHack = f.getCanonicalPath();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         Server server = new Server(80);
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
         resource_handler.setWelcomeFiles(new String[]{"index.html"});
-        resource_handler.setResourceBase("./src/main/webapp/");
+        resource_handler.setResourceBase(rootPathHack+"/../src/main/webapp/");
 
         //initialise servlet context handler
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);

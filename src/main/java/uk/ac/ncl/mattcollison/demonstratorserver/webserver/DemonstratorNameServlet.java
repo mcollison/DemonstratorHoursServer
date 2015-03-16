@@ -30,7 +30,7 @@ public class DemonstratorNameServlet extends HttpServlet {
             throws ServletException {
         SqlDAO db = new SqlDAO();
         try {
-            ResultSet results = db.queryDatabase("Select FirstName LastName from demo_hours.Demonstrators;");
+            ResultSet results = db.queryDatabase("Select FirstName, LastName FROM demo_hours.demonstrators;");
             while (results.next()) {
                 response.getWriter().println(results.getString(1) 
                 + " " + results.getString(2) + "\n");

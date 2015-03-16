@@ -76,7 +76,7 @@
 				  <datalist id="json-datalist"></datalist>
 				</td>
 				<td>
-				  <input type="number" name="no_hours0" value="1">
+				  <input type="number" id="no_hours0" value="1">
 				</td>
 			</tr>
 		  </table>

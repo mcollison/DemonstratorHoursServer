@@ -5,6 +5,7 @@
  */
 package uk.ac.ncl.mattcollison.demonstratorserver.webserver;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import com.mysql.jdbc.Driver;
 
 /**
  *
@@ -37,7 +39,8 @@ public class SqlDAO {
         try {
             //load properties
             dbProperties = new Properties();
-            dbProperties.load(new FileInputStream("./main/config/database.properties"));
+            String rootPath = new File(".").getCanonicalPath();
+            dbProperties.load(new FileInputStream(rootPath + "/../src/main/config/database.properties"));
 
             //initialise database driver 
             Class.forName(dbClass);
@@ -62,11 +65,26 @@ public class SqlDAO {
 
     }
 
+    public int executeQuery(String query) {
+        try {
+            if (connection == null) {
+                openDatabaseConnection();
+            }
+            Statement statement = getConnection().createStatement();
+            return statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public ResultSet queryDatabase(String query) {
         try {
+            if (connection == null) {
+                openDatabaseConnection();
+            }
             Statement statement = getConnection().createStatement();
             return statement.executeQuery(query);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,6 +105,7 @@ public class SqlDAO {
         try {
             ResultSet results = queryDatabase(query);
             ResultSetMetaData md = results.getMetaData();
+//            System.out.println(htmlTable);
             int count = md.getColumnCount();
 
             htmlTable += "<table>\n<tr>\n";
