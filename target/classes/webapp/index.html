@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	  <meta charset="UTF-8">
+	  <title>Demo manager | Log hours</title>
+	  <link rel="stylesheet" href="css/normalize.css">
+	  <link rel="stylesheet" href="css/style.css">
+	  <script src="js/scripts.js"></script>
+	</head>
+
+    <body>
+
+      <form action="dailyreport.html" method="post" id="inputForm" enctype="multipart/form-data">
+
+        <h1>Submit demonstrator hours</h1>
+
+        <fieldset>
+          <legend><span class="number">1</span>Date</legend>
+          <input type="date" name="demo_date">
+        </fieldset>
+		
+        <fieldset>
+			<legend><span class="number">2</span>Module code</legend>
+			<input list="codes" name="modules">
+			<datalist id="codes">
+			  <optgroup label="Stage 2">
+				<option value="CSC2122">
+				<option value="CSC2123">
+				<option value="CSC2124">
+				<option value="CSC2221">
+				<option value="CSC2222">
+				<option value="CSC2223">
+				<option value="CSC2224">
+				<option value="CSC2321">
+				<option value="CSC2322">
+				<option value="CSC2323">
+				<option value="CSC2324">
+				<option value="CSC2422">
+				<option value="CSC2423">
+				<option value="CSC2424">
+				<option value="CSC2621">
+				<option value="CSC2622">
+				<option value="CSC2721">
+				<option value="CSC2722">
+	          <optgroup label="Stage 3">
+				<option value="CSC3122">
+				<option value="CSC3123">
+				<option value="CSC3124">
+				<option value="CSC3221">
+				<option value="CSC3222">
+				<option value="CSC3223">
+				<option value="CSC3224">
+				<option value="CSC3321">
+				<option value="CSC3322">
+				<option value="CSC3323">
+				<option value="CSC3324">
+				<option value="CSC3422">
+				<option value="CSC3423">
+				<option value="CSC3424">
+				<option value="CSC3621">
+				<option value="CSC3622">
+				<option value="CSC3721">
+				<option value="CSC3722">
+			</datalist>
+        </fieldset>
+		
+        <fieldset id="demonstrator_names">
+          <legend><span class="number">3</span>Demonstrators</legend>
+		  
+		  <!--ADD AJAX OPTIONS HERE WHEN SERVER IS FUNCTIONAL -->
+		  <table id="demoNameTable">
+			<tr>
+				<td>
+				  <input type="text" name="demo_name0" list="json-datalist">
+				  <datalist id="json-datalist"></datalist>
+				</td>
+				<td>
+				  <input type="number" name="no_hours0" value="1">
+				</td>
+			</tr>
+		  </table>
+
+		  <input type="button" onclick="addDemonstrator()" id="add" value="add another demonstrator">
+        </fieldset>
+		
+        <button type="submit">Submit hours</button>
+      </form>
+
+    </body>
+
+</html>

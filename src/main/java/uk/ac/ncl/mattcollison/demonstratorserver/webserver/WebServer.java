@@ -49,7 +49,7 @@ public class WebServer implements Runnable {
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
         resource_handler.setWelcomeFiles(new String[]{"index.html"});
-        resource_handler.setResourceBase(rootPathHack+"/../src/main/webapp/");
+        resource_handler.setResourceBase(rootPathHack+"/../src/main/resources/webapp/");
 
         //initialise servlet context handler
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);

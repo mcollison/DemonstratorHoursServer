@@ -40,11 +40,14 @@ public class SqlDAO {
             //load properties
             dbProperties = new Properties();
             String rootPath = new File(".").getCanonicalPath();
-            dbProperties.load(new FileInputStream(rootPath + "/../src/main/config/database.properties"));
+            dbProperties.load(SqlDAO.class.getResourceAsStream("/config/database.properties"));
+//            dbProperties.load(new FileInputStream(rootPath + "/../src/main/resources/config/database.properties"));
 
             //initialise database driver 
             Class.forName(dbClass);
 
+            System.out.println(dbProperties.getProperty("database"));
+            
             //start connection 
             connection = DriverManager.getConnection(
                     dbProperties.getProperty("database"),
