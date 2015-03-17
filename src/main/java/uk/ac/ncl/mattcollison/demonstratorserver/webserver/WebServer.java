@@ -36,20 +36,14 @@ public class WebServer implements Runnable {
     }
 
     public void run() {
-        File f = new File("./");
-        String rootPathHack="";
-        try {
-            rootPathHack = f.getCanonicalPath();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
 
         Server server = new Server(80);
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
         resource_handler.setWelcomeFiles(new String[]{"index.html"});
-        resource_handler.setResourceBase(rootPathHack+"/../src/main/resources/webapp/");
+        resource_handler.setResourceBase(
+                WebServer.class.getResource("/webapp/").getPath());
 
         //initialise servlet context handler
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);

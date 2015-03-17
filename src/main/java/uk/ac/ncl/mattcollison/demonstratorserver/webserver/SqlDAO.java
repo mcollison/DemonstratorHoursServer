@@ -39,9 +39,7 @@ public class SqlDAO {
         try {
             //load properties
             dbProperties = new Properties();
-            String rootPath = new File(".").getCanonicalPath();
             dbProperties.load(SqlDAO.class.getResourceAsStream("/config/database.properties"));
-//            dbProperties.load(new FileInputStream(rootPath + "/../src/main/resources/config/database.properties"));
 
             //initialise database driver 
             Class.forName(dbClass);
@@ -58,11 +56,14 @@ public class SqlDAO {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.print("connection not initialised...");
+            System.err.println("connection not initialised...");
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.err.print("Database properties file not found..."
+            System.err.println("Database properties file not found..."
                     + "\nIt should be created in the config driectory.");
+        } catch (NullPointerException ex){
+            System.err.println("This may indicate the \"config/database.properties\" file was not created.");
+            ex.printStackTrace();
         }
         return connection;
 

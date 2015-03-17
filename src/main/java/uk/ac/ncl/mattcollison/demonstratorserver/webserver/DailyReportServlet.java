@@ -41,16 +41,17 @@ public class DailyReportServlet extends HttpServlet {
             Enumeration<String> formParts = request.getParameterNames();
             while(formParts.hasMoreElements()){
                 String formElement = formParts.nextElement();
-//                System.out.println(formElement);
                 if (formElement.startsWith("demo_name")){
-//                    System.out.println("CHECKPOINT");
                     int number = Integer.parseInt(formElement.replace("demo_name", ""));
-                    String dbquery = "INSERT INTO demo_hours.demo_hours (Date, ModuleCode, DemonstratorID) VALUES (\""
-                            + request.getParameter("demo_date")
-                            + "\", \"" + request.getParameter("modules")
-                            + "\", (SELECT ID FROM demo_hours.demonstrators WHERE demonstrators.LastName = \"" + request.getParameter(formElement).split(" ")[1] +"\"));";
-//                                    + "), " + request.getParameter("no_hours"+number);
-//                    System.out.println(dbquery);
+                    String[] name = request.getParameter(formElement).split(" ");
+                    String dbquery = "INSERT INTO demo_hours.hours (ID, ModuleCode, Hours, Date) VALUES ("
+                            + "(SELECT ID FROM demo_hours.demonstrators WHERE "
+                            + "demonstrators.LastName = \""+ name[name.length] +"\" "
+                            + "AND demonstrators.FirstName = \""+ name[0] +"\" ), "
+                            + "\"" + request.getParameter("modules") + "\", "
+                            + "\"" + request.getParameter("no_hours"+number) + "\", "
+                            + "\"" + request.getParameter("demo_date") + "\");";
+                    System.out.println(dbquery);
                     db.executeQuery(dbquery);
                 }
             }
@@ -63,10 +64,10 @@ public class DailyReportServlet extends HttpServlet {
 
     private void dailyResponseTable(HttpServletResponse response) {
         try {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
             Date date = new Date();
 //            System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
-            String query = "SELECT * FROM demo_hours WHERE demo_hours.Date = \"" + dateFormat.format(date) + "\";";
+            String query = "SELECT * FROM demo_hours.hours WHERE hours.Date = \"" + dateFormat.format(date) + "\";";
 //            System.out.println(query);
             String dbResponse = db.queryToHTML(query);
 //            System.out.println(dbResponse);
