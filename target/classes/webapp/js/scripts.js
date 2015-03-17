@@ -39,9 +39,21 @@ function addDemonstrator() {
 
 }
 
+function getMonth(date) {
+    var month = date.getMonth() +1;
+    return month < 10 ? '0' + month : month; // ('' + month) for string result
+}
+
+window.onload=function insertDate() {
+	console.log("checkpoint2");
+	var d = new Date();
+	var string = "";
+	document.getElementById("input_date").value = d.getFullYear() + "-" + getMonth(d) + "-" + d.getDate();
+}
+
 //AJAX content
-var dataList = document.getElementById('json-datalist');
-var input = document.getElementById('demo_name0');
+//var dataList = document.getElementById('json-datalist');
+//var input = document.getElementById('demo_name0');
 
 // Create a new XMLHttpRequest.
 var request = new XMLHttpRequest();
