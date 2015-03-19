@@ -73,11 +73,12 @@
 		  
 		  <!--ADD AJAX OPTIONS HERE WHEN SERVER IS FUNCTIONAL -->
 		  <table id="demoNameTable">
+		   <tbody id="demoNameTbody">
 			<tr>
 				<td>Name</td>
 				<td>Hours</td>
 			</tr>
-			<tr>
+			<tr id="0">
 				<td>
 				  <input type="text" name="demo_name0" list="json-datalist">
 				  <datalist id="json-datalist"></datalist>
@@ -86,10 +87,13 @@
 				<td>
 				  <input type="number" name="no_hours0" value="1" min="0.5" max="50" step="0.5"></input>
 				</td>
+				<td>
+				  <input type="button" class="delete" onclick="deleteRow(0)" value="x"></a>
+				</td>
 			</tr>
+		   </tbody>
 		  </table>
-
-		  <input type="button" onclick="insertDate()" id="add" value="add another demonstrator"></input>
+		  <input type="button" onclick="addDemonstrator()" id="add" value="add another demonstrator"></input>
         </fieldset>
 		
         <button type="submit">Submit hours</button>

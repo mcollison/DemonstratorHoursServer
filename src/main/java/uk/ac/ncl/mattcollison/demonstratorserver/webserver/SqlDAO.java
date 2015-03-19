@@ -5,9 +5,11 @@
  */
 package uk.ac.ncl.mattcollison.demonstratorserver.webserver;
 
+import com.mysql.jdbc.Driver;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,7 +17,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-import com.mysql.jdbc.Driver;
+import java.util.Scanner;
 
 /**
  *
@@ -45,7 +47,7 @@ public class SqlDAO {
             Class.forName(dbClass);
 
             System.out.println(dbProperties.getProperty("database"));
-            
+
             //start connection 
             connection = DriverManager.getConnection(
                     dbProperties.getProperty("database"),
@@ -61,12 +63,48 @@ public class SqlDAO {
             ex.printStackTrace();
             System.err.println("Database properties file not found..."
                     + "\nIt should be created in the config driectory.");
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             System.err.println("This may indicate the \"config/database.properties\" file was not created.");
             ex.printStackTrace();
         }
         return connection;
 
+    }
+
+    public void setupDatabase() {
+        //if database doesn't already exist it should be created 
+        if (!dbExists("demo_hours")) {
+            InputStream sqlScript = SqlDAO.class.getResourceAsStream("/scripts/setup.sql");
+            runSQLScript(sqlScript);
+        }
+    }
+
+    public boolean dbExists(String dbName) {
+        try {
+            ResultSet databaseSet = getConnection().createStatement().executeQuery("SHOW DATABASES;");
+            while (databaseSet.next()) {
+                if (databaseSet.toString().contains(dbName)) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public void runSQLScript(InputStream sqlScript) {
+        Scanner sc = new Scanner(sqlScript);
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine();
+            //consider batch inserts here if performance becomes a problem
+            try {
+                getConnection().createStatement().executeUpdate(line);
+            } catch (SQLException sqlEx) {
+                System.err.println("SQL failed for statement: " + line);
+                sqlEx.printStackTrace();
+            }
+        }
     }
 
     public int executeQuery(String query) {

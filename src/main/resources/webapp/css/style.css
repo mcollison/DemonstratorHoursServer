@@ -74,10 +74,19 @@ button {
   margin-bottom: 10px;
 }
 
+input.delete {
+  padding:15px;
+  margin-bottom:30px;
+  background:transparent;
+  border:transparent;
+}
+
 fieldset {
   margin-bottom: 30px;
   border: none;
+  
 }
+
 
 legend {
   font-size: 1.4em;

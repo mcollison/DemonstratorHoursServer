@@ -29,7 +29,7 @@ public class WebServer implements Runnable {
         //start web server in new thread
         try {
             (new Thread(new WebServer())).start();
-            Desktop.getDesktop().browse(new URL("http://localhost").toURI());
+//            Desktop.getDesktop().browse(new URL("http://localhost").toURI());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -43,8 +43,9 @@ public class WebServer implements Runnable {
         resource_handler.setDirectoriesListed(true);
         resource_handler.setWelcomeFiles(new String[]{"index.html"});
         resource_handler.setResourceBase(
-                WebServer.class.getResource("/webapp/").getPath());
+                WebServer.class.getResource(".classes/webapp/").getPath());
 
+        System.out.println(WebServer.class.getResource("/webapp/").getPath());
         //initialise servlet context handler
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");

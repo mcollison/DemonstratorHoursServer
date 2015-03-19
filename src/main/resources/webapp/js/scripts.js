@@ -1,5 +1,6 @@
 var i=1;
 function addDemonstrator() {
+if(i<10){
 	//create json input list element
 	var demoNameElement = document.createElement("input");
 	var att1 = document.createAttribute("type");
@@ -24,19 +25,46 @@ function addDemonstrator() {
 	demoHoursElement.setAttributeNode(att2);
 	demoHoursElement.setAttributeNode(att3);
 	
+	//create delete button element 
+	var demoHoursDelete = document.createElement("input");
+	demoHoursDelete.type = "button";
+	demoHoursDelete.value = "x";
+	var att1 = document.createAttribute("onclick");
+	att1.value = "deleteRow(" +i+ ")";
+	demoHoursDelete.setAttributeNode(att1);
+	var att2 = document.createAttribute("class");
+	att2.value = "delete";
+	demoHoursDelete.setAttributeNode(att2);
+	
 	//create table structure
 	var trElement = document.createElement("tr");
+	trElement.id = i;
 	var td1Element = document.createElement("td");
 	var td2Element = document.createElement("td");
+	var td3Element = document.createElement("td");	
 	td1Element.appendChild(demoNameElement);
 	td2Element.appendChild(demoHoursElement);
+	td3Element.appendChild(demoHoursDelete);	
 	trElement.appendChild(td1Element);
 	trElement.appendChild(td2Element);
-	document.getElementById("demoNameTable").appendChild(trElement);
+	trElement.appendChild(td3Element);
+	document.getElementById("demoNameTbody").appendChild(trElement);
 	i=i+1;	
+}
 //	var button = document.getElementById("add");
 //	document.getElementById("demonstrator_names").insertBefore(demoNameElement,button);
 
+}
+
+function deleteRow(num){
+	var parent = document.getElementById("demoNameTbody");
+	console.log(parent);
+	var child = document.getElementById(num);
+	console.log(child);
+	parent.removeChild(child);
+}
+
+function deleteRowZero(){
 }
 
 function getMonth(date) {
@@ -45,7 +73,6 @@ function getMonth(date) {
 }
 
 window.onload=function insertDate() {
-	console.log("checkpoint2");
 	var d = new Date();
 	var string = "";
 	document.getElementById("input_date").value = d.getFullYear() + "-" + getMonth(d) + "-" + d.getDate();
