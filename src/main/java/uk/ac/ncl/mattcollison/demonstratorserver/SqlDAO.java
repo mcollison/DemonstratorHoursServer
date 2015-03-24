@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.ac.ncl.mattcollison.demonstratorserver.webserver;
+package uk.ac.ncl.mattcollison.demonstratorserver;
 
 import com.mysql.jdbc.Driver;
 import java.io.File;
@@ -22,6 +22,9 @@ import java.util.Scanner;
 /**
  *
  * @author Matt2
+ *
+ * This class should establish access with a local database. It should also take
+ * a daily backup of the database.
  */
 public class SqlDAO {
 
@@ -150,7 +153,7 @@ public class SqlDAO {
 //            System.out.println(htmlTable);
             int count = md.getColumnCount();
 
-            htmlTable += "<table>\n<tr>\n";
+            htmlTable += "<table class=\"tableWithFloatingHeader nasdaq\">\n<tr>\n";
             for (int i = 1; i <= count; i++) {
                 htmlTable += "<td>";
                 htmlTable += md.getColumnLabel(i);
@@ -172,5 +175,27 @@ public class SqlDAO {
             ex.printStackTrace();
         }
         return htmlTable;
+    }
+
+    public void backup(int day) {
+        String execCmd = "";
+        execCmd = "mysqldump -u " + dbProperties.getProperty("dbuser")
+                + " -p " + dbProperties.getProperty("dbpassword")
+                + " " + dbProperties.getProperty("database")
+                + " -r backup" + day + ".sql";
+        try {
+            Process p = Runtime.getRuntime().exec(execCmd);
+            int exitCode = p.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Backup successful");
+            } else {
+                System.out.println("Backup failed");
+            }
+        } catch (IOException ioEx) {
+            ioEx.printStackTrace();
+        } catch (InterruptedException intEx) {
+            intEx.printStackTrace();
+        }
+
     }
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.ac.ncl.mattcollison.demonstratorserver.webserver;
+package uk.ac.ncl.mattcollison.demonstratorserver;
 
 import java.net.URL;
 import org.eclipse.jetty.server.Handler;
@@ -13,39 +13,38 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import java.awt.Desktop;
 import java.io.File;
 import javax.servlet.MultipartConfigElement;
 
 /**
  *
  * @author Matt Collison
+ * 
+ * This web server should allow individual sessions to be logged (added to 
+ * the database). It should also enable spreadsheet uploading. 
  */
-public class WebServer implements Runnable {
+public class WebServer {
 
     public static SqlDAO database;
 
-    public static void main(String[] args) {
-        //start web server in new thread
-        try {
-            (new Thread(new WebServer())).start();
-//            Desktop.getDesktop().browse(new URL("http://localhost").toURI());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public static void startServer() {
 
-    public void run() {
-
+        String resourcePath ="";
         Server server = new Server(80);
 
+        try{
+            resourcePath = new File("./").getCanonicalPath() + "/classes/webapp/";
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
         resource_handler.setWelcomeFiles(new String[]{"index.html"});
-        resource_handler.setResourceBase(
-                WebServer.class.getResource(".classes/webapp/").getPath());
+        resource_handler.setResourceBase(resourcePath);
+//                WebServer.class.getResource("/webapp/").getPath());
+        System.out.println(resourcePath);
 
-        System.out.println(WebServer.class.getResource("/webapp/").getPath());
         //initialise servlet context handler
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
