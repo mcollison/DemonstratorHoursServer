@@ -15,31 +15,26 @@ public class Main {
 
     public static void main(String[] args) {
 
-        SendEmail emails;
-        SqlDAO db;
+        SendEmail emails = new SendEmail();;
+        SqlDAO db = new SqlDAO();;
         int month = Calendar.MONTH;
         int day = Calendar.DAY_OF_YEAR;
 
         //take command-line arguments for testing
         if (args.length != 0) {
-            if (args[0].equals("-test")) {
-                emails = new SendEmail(true);
-            } else {
-                emails = new SendEmail();
-            }
             for (int i = 0; i < args.length; i++) {
                 if (args[i].equals("-parse")) {
                     SpreadsheetParser demoSheet = new SpreadsheetParser(args[i + 1]);
                     demoSheet.parse();
                 }
+                if (args[i].equals("-test")) {
+                    emails = new SendEmail(true);
+                }
             }
-        } else {
-            emails = new SendEmail();
         }
-        db = new SqlDAO();// Possibly update this for non local databases command-line options later
 
-        //start web server 
-        WebServer.startServer();
+        //start web server in new thread 
+        (new Thread(new WebServer())).start();
 
         //start email scheduler 
         try {
@@ -53,7 +48,7 @@ public class Main {
                     day = Calendar.DAY_OF_YEAR;
                 }
                 Thread.sleep(10000);
-                System.out.println("Month: " + Calendar.MONTH 
+                System.out.println("Month: " + Calendar.MONTH
                         + "\nDay: " + Calendar.DAY_OF_YEAR);
             }
         } catch (InterruptedException intEx) {

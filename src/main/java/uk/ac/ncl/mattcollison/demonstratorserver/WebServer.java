@@ -23,11 +23,11 @@ import javax.servlet.MultipartConfigElement;
  * This web server should allow individual sessions to be logged (added to 
  * the database). It should also enable spreadsheet uploading. 
  */
-public class WebServer {
+public class WebServer implements Runnable{
 
     public static SqlDAO database;
 
-    public static void startServer() {
+    public void run() {
 
         String resourcePath ="";
         Server server = new Server(80);
