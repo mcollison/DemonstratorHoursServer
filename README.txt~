@@ -4,7 +4,7 @@ To initialise the system a MySQL database should be running on the host machine.
 
 Ideally to setup the system you should seed the database with a list of demonstrators and modules although they can be updated with new entries. 
 
-make sure to run the jar from within the target directory. Filepaths are hard coded relative to that directory. 
+make sure to run the jar from within the target directory. Filepaths are programmed exactly. 
 
 ****MySQL Setup****
 sudo apt-get install mysql-server
