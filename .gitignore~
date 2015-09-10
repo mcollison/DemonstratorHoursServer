@@ -1,4 +1,4 @@
 #remove database credentials 
-#*.properties
+*.properties
 #ignore all post build files. Note: these files will include a plain text copy of the database password
 target/

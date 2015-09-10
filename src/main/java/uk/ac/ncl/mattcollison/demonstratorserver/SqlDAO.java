@@ -53,7 +53,7 @@ public class SqlDAO {
 
             //start connection 
             connection = DriverManager.getConnection(
-                    dbProperties.getProperty("database"),
+                    dbProperties.getProperty("long_db"),
                     dbProperties.getProperty("dbuser"),
                     dbProperties.getProperty("dbpassword"));
 

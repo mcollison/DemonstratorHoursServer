@@ -48,9 +48,9 @@ public class DailyReportServlet extends HttpServlet {
                 int number = Integer.parseInt(formElement.replace("demo_name", ""));
                 String[] name = request.getParameter(formElement).split(" ");
                 if (name.length > 0) {
-                    String dbquery = "INSERT INTO demo_hours.hours (ID, ModuleCode, Hours, Date) VALUES ("
+                    String dbquery = "INSERT INTO demo_hours.hours (ID, Module_code, Hours, Demo_date) VALUES ("
                             + "(SELECT ID FROM demo_hours.demonstrators WHERE "
-                            + "demonstrators.LastName = \"" + name[name.length] + "\" "
+                            + "demonstrators.LastName = \"" + name[name.length-1] + "\" "
                             + "AND demonstrators.FirstName = \"" + name[0] + "\" ), "
                             + "\"" + request.getParameter("modules") + "\", "
                             + "\"" + request.getParameter("no_hours" + number) + "\", "
@@ -72,7 +72,7 @@ public class DailyReportServlet extends HttpServlet {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
             Date date = new Date();
 //            System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
-            String query = "SELECT * FROM demo_hours.hours WHERE hours.Date = \"" + dateFormat.format(date) + "\";";
+            String query = "SELECT * FROM demo_hours.hours WHERE hours.Demo_date = \"" + dateFormat.format(date) + "\";";
 //            System.out.println(query);
             String dbResponse = db.queryToHTML(query);
 //            System.out.println(dbResponse);
