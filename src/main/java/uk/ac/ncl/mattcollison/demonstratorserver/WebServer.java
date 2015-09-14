@@ -19,28 +19,28 @@ import javax.servlet.MultipartConfigElement;
 /**
  *
  * @author Matt Collison
- * 
- * This web server should allow individual sessions to be logged (added to 
- * the database). It should also enable spreadsheet uploading. 
+ *
+ * This web server should allow individual sessions to be logged (added to the
+ * database). It should also enable spreadsheet uploading.
  */
-public class WebServer implements Runnable{
+public class WebServer implements Runnable {
 
     public static SqlDAO database;
 
     public void run() {
 
-        String resourcePath ="";
+        String resourcePath = "";
         Server server = new Server(80);
 
-        try{
+        try {
             resourcePath = new File("./").getCanonicalPath() + "/classes/webapp/";
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
+
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
-        resource_handler.setWelcomeFiles(new String[]{"index.html"});
+        resource_handler.setWelcomeFiles(new String[]{"insert.html"});
         resource_handler.setResourceBase(resourcePath);
 //                WebServer.class.getResource("/webapp/").getPath());
         System.out.println(resourcePath);
@@ -57,6 +57,11 @@ public class WebServer implements Runnable{
         dailyreportServletHolder.getRegistration().setMultipartConfig(
                 new MultipartConfigElement("data/tmp"));
         context.addServlet(dailyreportServletHolder, "/dailyreport.html");
+
+        ServletHolder indexServletHolder = new ServletHolder(new IndexServlet());
+        dailyreportServletHolder.getRegistration().setMultipartConfig(
+                new MultipartConfigElement("data/tmp"));
+        context.addServlet(indexServletHolder, "/insert.html");
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resource_handler, context, new DefaultHandler()});
